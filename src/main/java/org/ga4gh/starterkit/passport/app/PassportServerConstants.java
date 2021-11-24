@@ -1,6 +1,6 @@
-package org.ga4gh.starterkit.passport;
+package org.ga4gh.starterkit.passport.app;
 
-public class AppConfigConstants {
+public class PassportServerConstants {
 
     public static final String EMPTY_PASSPORT_CONFIG_CONTAINER = "emptyPassportConfigContainer";
     public static final String DEFAULT_PASSPORT_CONFIG_CONTAINER = "defaultPassportConfigContainer";

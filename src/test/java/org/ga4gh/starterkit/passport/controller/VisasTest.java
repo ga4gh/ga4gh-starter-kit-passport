@@ -1,7 +1,7 @@
 package org.ga4gh.starterkit.passport.controller;
 
-import org.ga4gh.starterkit.passport.App;
-import org.ga4gh.starterkit.passport.AppConfig;
+import org.ga4gh.starterkit.passport.app.PassportServer;
+import org.ga4gh.starterkit.passport.app.PassportServerSpringConfig;
 import org.ga4gh.starterkit.passport.model.PassportVisa;
 import org.ga4gh.starterkit.passport.utils.hibernate.PassportHibernateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
-@ContextConfiguration(classes = {App.class, AppConfig.class, Visas.class})
+@ContextConfiguration(classes = {PassportServer.class, PassportServerSpringConfig.class, Visas.class})
 @WebAppConfiguration
 public class VisasTest extends AbstractTestNGSpringContextTests {
 

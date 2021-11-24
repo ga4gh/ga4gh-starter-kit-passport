@@ -1,42 +1,79 @@
-package org.ga4gh.starterkit.passport;
+package org.ga4gh.starterkit.passport.app;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-
+import org.apache.catalina.connector.Connector;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.ga4gh.starterkit.common.config.DatabaseProps;
+import org.ga4gh.starterkit.common.config.ServerProps;
 import org.ga4gh.starterkit.common.requesthandler.BasicCreateRequestHandler;
 import org.ga4gh.starterkit.common.requesthandler.BasicDeleteRequestHandler;
 import org.ga4gh.starterkit.common.requesthandler.BasicShowRequestHandler;
 import org.ga4gh.starterkit.common.requesthandler.BasicUpdateRequestHandler;
 import org.ga4gh.starterkit.common.util.DeepObjectMerger;
-import org.ga4gh.starterkit.passport.configuration.PassportConfigContainer;
+import org.ga4gh.starterkit.common.util.logging.LoggingUtil;
+import org.ga4gh.starterkit.common.util.webserver.AdminEndpointsConnector;
+import org.ga4gh.starterkit.common.util.webserver.AdminEndpointsFilter;
+import org.ga4gh.starterkit.common.util.webserver.CorsFilterBuilder;
+import org.ga4gh.starterkit.common.util.webserver.TomcatMultiConnectorServletWebServerFactoryCustomizer;
+import org.ga4gh.starterkit.passport.model.PassportServiceInfo;
 import org.ga4gh.starterkit.passport.model.PassportUser;
 import org.ga4gh.starterkit.passport.model.PassportVisa;
 import org.ga4gh.starterkit.passport.utils.hibernate.PassportHibernateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @ConfigurationProperties
-public class AppConfig implements WebMvcConfigurer {
+public class PassportServerSpringConfig implements WebMvcConfigurer {
 
     /* ******************************
-     * PASSPORT CONFIG BEANS
+     * TOMCAT SERVER
+     * ****************************** */
+
+    @Value("${server.admin.port:4501}")
+    private String serverAdminPort;
+
+    @Bean
+    public WebServerFactoryCustomizer servletContainer() {
+        Connector[] additionalConnectors = AdminEndpointsConnector.additionalConnector(serverAdminPort);
+        ServerProperties serverProperties = new ServerProperties();
+        return new TomcatMultiConnectorServletWebServerFactoryCustomizer(serverProperties, additionalConnectors);
+    }
+
+    @Bean
+    public FilterRegistrationBean<AdminEndpointsFilter> adminEndpointsFilter() {
+        return new FilterRegistrationBean<AdminEndpointsFilter>(new AdminEndpointsFilter(Integer.valueOf(serverAdminPort)));
+    }
+
+    @Bean
+    public FilterRegistrationBean<CorsFilter> corsFilter(
+        @Autowired ServerProps serverProps
+    ) {
+        return new CorsFilterBuilder(serverProps).buildFilter();
+    }
+
+    /* ******************************
+     * YAML CONFIG
      * ****************************** */
 
     @Bean
@@ -47,26 +84,26 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    @Scope(AppConfigConstants.PROTOTYPE)
-    @Qualifier(AppConfigConstants.EMPTY_PASSPORT_CONFIG_CONTAINER)
-    public PassportConfigContainer emptyPassportConfigContainer() {
-        return new PassportConfigContainer();
+    @Scope(PassportServerConstants.PROTOTYPE)
+    @Qualifier(PassportServerConstants.EMPTY_PASSPORT_CONFIG_CONTAINER)
+    public PassportServerYamlConfigContainer emptyPassportConfigContainer() {
+        return new PassportServerYamlConfigContainer();
     }
 
     @Bean
-    @Qualifier(AppConfigConstants.DEFAULT_PASSPORT_CONFIG_CONTAINER)
-    public PassportConfigContainer defaultPassportConfigContainer(
-        @Qualifier(AppConfigConstants.EMPTY_PASSPORT_CONFIG_CONTAINER) PassportConfigContainer passportConfigContainer
+    @Qualifier(PassportServerConstants.DEFAULT_PASSPORT_CONFIG_CONTAINER)
+    public PassportServerYamlConfigContainer defaultPassportConfigContainer(
+        @Qualifier(PassportServerConstants.EMPTY_PASSPORT_CONFIG_CONTAINER) PassportServerYamlConfigContainer passportConfigContainer
     ) {
         return passportConfigContainer;
     }
 
     @Bean
-    @Qualifier(AppConfigConstants.USER_PASSPORT_CONFIG_CONTAINER)
-    public PassportConfigContainer userPassportConfigContainer(
+    @Qualifier(PassportServerConstants.USER_PASSPORT_CONFIG_CONTAINER)
+    public PassportServerYamlConfigContainer userPassportConfigContainer(
         @Autowired ApplicationArguments args,
         @Autowired() Options options,
-        @Qualifier(AppConfigConstants.EMPTY_PASSPORT_CONFIG_CONTAINER) PassportConfigContainer passportConfigContainer
+        @Qualifier(PassportServerConstants.EMPTY_PASSPORT_CONFIG_CONTAINER) PassportServerYamlConfigContainer passportConfigContainer
     ) {
 
         try {
@@ -77,7 +114,7 @@ public class AppConfig implements WebMvcConfigurer {
                 File configFile = new File(configFilePath);
                 if (configFile.exists() && !configFile.isDirectory()) {
                     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-                    passportConfigContainer = mapper.readValue(configFile, PassportConfigContainer.class);
+                    passportConfigContainer = mapper.readValue(configFile, PassportServerYamlConfigContainer.class);
                 } else {
                     throw new FileNotFoundException();
                 }
@@ -94,30 +131,61 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    @Qualifier(AppConfigConstants.FINAL_PASSPORT_CONFIG_CONTAINER)
-    public PassportConfigContainer finalPassportConfigContainer(
-        @Qualifier(AppConfigConstants.DEFAULT_PASSPORT_CONFIG_CONTAINER) PassportConfigContainer defaultContainer,
-        @Qualifier(AppConfigConstants.USER_PASSPORT_CONFIG_CONTAINER) PassportConfigContainer userContainer
+    @Qualifier(PassportServerConstants.FINAL_PASSPORT_CONFIG_CONTAINER)
+    public PassportServerYamlConfigContainer finalPassportConfigContainer(
+        @Qualifier(PassportServerConstants.DEFAULT_PASSPORT_CONFIG_CONTAINER) PassportServerYamlConfigContainer defaultContainer,
+        @Qualifier(PassportServerConstants.USER_PASSPORT_CONFIG_CONTAINER) PassportServerYamlConfigContainer userContainer
     ) {
-        DeepObjectMerger.merge(userContainer, defaultContainer);
+        DeepObjectMerger merger = new DeepObjectMerger();
+        merger.merge(userContainer, defaultContainer);
         return defaultContainer;
     }
 
+    @Bean
+    public ServerProps getServerProps(
+        @Qualifier(PassportServerConstants.FINAL_PASSPORT_CONFIG_CONTAINER) PassportServerYamlConfigContainer passportConfigContainer
+    ) {
+        return passportConfigContainer.getStarterKitPassport().getServerProps();
+    }
+
+    @Bean
+    public DatabaseProps getDatabaseProps(
+        @Qualifier(PassportServerConstants.FINAL_PASSPORT_CONFIG_CONTAINER) PassportServerYamlConfigContainer passportConfigContainer
+    ) {
+        return passportConfigContainer.getStarterKitPassport().getDatabaseProps();
+    }
+
+    @Bean
+    public PassportServiceInfo getServiceInfo(
+        @Qualifier(PassportServerConstants.FINAL_PASSPORT_CONFIG_CONTAINER) PassportServerYamlConfigContainer passportConfigContainer
+    ) {
+        return passportConfigContainer.getStarterKitPassport().getServiceInfo();
+    }
+
     /* ******************************
-     * HIBERNATE CONFIG BEANS
+     * LOGGING
+     * ****************************** */
+
+    @Bean
+    public LoggingUtil loggingUtil() {
+        return new LoggingUtil();
+    }
+
+    /* ******************************
+     * HIBERNATE CONFIG
      * ****************************** */
 
     @Bean
     public PassportHibernateUtil getPassportHibernateUtil(
-        @Qualifier(AppConfigConstants.FINAL_PASSPORT_CONFIG_CONTAINER) PassportConfigContainer passportConfigContainer
+        @Autowired DatabaseProps databaseProps
     ) {
         PassportHibernateUtil hibernateUtil = new PassportHibernateUtil();
-        hibernateUtil.setHibernateProps(passportConfigContainer.getPassportConfig().getHibernateProps());
+        hibernateUtil.setDatabaseProps(databaseProps);
         return hibernateUtil;
     }
 
     /* ******************************
-     * REQUEST HANDLER BEANS
+     * REQUEST HANDLER
      * ****************************** */
 
     // USERS
