@@ -1,12 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import {
+    Typography,
+    Card,
+    TextField,
+    Container
+} from '@mui/material'
 
-const PageA = () => {
+const Register = () => {
+
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [userId, setUserId] = useState("");
+    const [organization, setOrganization] = useState("");
+    const [password, setPassword] = useState("");
+
+    const formItems = [
+        {label: "First Name", value: firstName, setter: setFirstName},
+        {label: "Last Name", value: lastName, setter: setLastName},
+        {label: "Email", value: email, setter: setEmail},
+        {label: "User ID", value: userId, setter: setUserId},
+        {label: "Organization", value: organization, setter: setOrganization},
+        {label: "Password", value: password, setter: setPassword}
+    ]
+
     return (
-        <div>
-            <h1>This is the Register Page</h1>
-        </div>
+        <Container>
+            <Typography variant="h1">
+                Register
+            </Typography>
+
+            {formItems.map(formItem => {
+                return (
+                    <TextField
+                        label={formItem.label}
+                        value={formItem.value}
+                        onChange={e => formItem.setter(e.target.value)}
+                        variant="outlined"
+                    />
+                )
+            })}
+        </Container>
     )
 }
 
-export default PageA;
+export default Register;
