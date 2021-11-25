@@ -31,4 +31,5 @@ build
 bin
 ga4gh-starter-kit.dev.db
 
+dist
 node_modules
