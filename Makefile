@@ -8,6 +8,19 @@ JAR := ga4gh-starter-kit-passport-admin.jar
 Nothing:
 	@echo "No target provided. Stop"
 
+# ##############################
+# PASSPORT USER MANAGEMENT
+# ##############################
+
+.PHONY: passport-user-management-quickstart
+passport-user-management-quickstart:
+	@docker-compose -p passport-user-management -f apps/passport-user-management/quickstart/quickstart.yml up --build --force-recreate
+
+# .PHONY: passport-user-management-shutdown
+# passport-user-management-shutdown:
+# 	@docker-compose -f apps/passport-user-management/quickstart/quickstart.yml down
+
+
 .PHONY: clean-sqlite
 clean-sqlite:
 	@rm -f ${DEVDB}
