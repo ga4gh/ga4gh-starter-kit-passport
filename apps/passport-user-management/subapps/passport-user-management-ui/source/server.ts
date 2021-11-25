@@ -10,6 +10,7 @@ const router: Express = express();
 router.use(morgan('dev'));
 router.use(express.urlencoded({extended: false}));
 router.use(express.json());
+router.use(express.static('public'));
 
 // API rules applied to all routes
 router.use((req, res, next) => {

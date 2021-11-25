@@ -1,8 +1,8 @@
 import express from 'express';
-import controller from '../controllers/ui';
+import getUI from '../controllers/ui';
 
 const router = express.Router();
 
-router.get("/", controller.getUI);
+router.get("/*", getUI);
 
 export = router;

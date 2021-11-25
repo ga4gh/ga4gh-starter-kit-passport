@@ -7,7 +7,7 @@
     "serverDev": "nodemon source/server.ts",
     "serverBuild": "npx webpack --config webpack.config.server.js",
     "uiBuild": "npx webpack --config webpack.config.ui.js",
-    "htmlBuild": "cp index.html dist/",
+    "htmlBuild": "cp react.html dist/public",
     "build": "rm -rf dist && npm run serverBuild && npm run uiBuild && npm run htmlBuild"
   },
   "keywords": [],
