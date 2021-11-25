@@ -4,9 +4,11 @@ import {
     Routes,
     Route,
 } from 'react-router-dom';
-import Home from './components/pages/Home';
-import PageA from './components/pages/PageA';
-import PageB from './components/pages/PageB';
+import {
+    Login,
+    Profile,
+    Register
+ } from './components/pages';
 
 const App = () => {
 
@@ -26,9 +28,10 @@ const App = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/a" element={<PageA />} />
-                <Route path="/b" element={<PageB />} />
+                <Route path="/" element={<Login />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/register" element={<Register />} />
             </Routes>
         </BrowserRouter>
     )
