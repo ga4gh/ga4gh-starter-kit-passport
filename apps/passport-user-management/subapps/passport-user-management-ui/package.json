@@ -1,6 +1,6 @@
 {
   "name": "passport-user-management-ui",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "source/server.ts",
   "scripts": {
