@@ -68,7 +68,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           file: ./Dockerfile
           push: true
-          tags: ga4gh/ga4gh-starter-kit-data-connect:test
+          tags: ga4gh/ga4gh-starter-kit-passport-broker:test
           build-args: VERSION=${{ env.version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
