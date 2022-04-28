@@ -1,4 +1,4 @@
-package org.ga4gh.starterkit.passport.model;
+package org.ga4gh.starterkit.passport.broker.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.ga4gh.starterkit.common.hibernate.HibernateEntity;
-import org.ga4gh.starterkit.passport.utils.SerializeView;
+import org.ga4gh.starterkit.passport.broker.utils.SerializeView;
 import org.hibernate.Hibernate;
 import org.springframework.lang.NonNull;
 

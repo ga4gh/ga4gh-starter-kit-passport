@@ -1,4 +1,4 @@
-package org.ga4gh.starterkit.passport.model;
+package org.ga4gh.starterkit.passport.broker.model;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;

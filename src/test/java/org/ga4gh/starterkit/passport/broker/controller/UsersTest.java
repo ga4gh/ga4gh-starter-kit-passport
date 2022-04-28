@@ -1,9 +1,9 @@
-package org.ga4gh.starterkit.passport.controller;
+package org.ga4gh.starterkit.passport.broker.controller;
 
-import org.ga4gh.starterkit.passport.App;
-import org.ga4gh.starterkit.passport.AppConfig;
-import org.ga4gh.starterkit.passport.model.PassportVisa;
-import org.ga4gh.starterkit.passport.utils.hibernate.PassportHibernateUtil;
+import org.ga4gh.starterkit.passport.broker.app.PassportBroker;
+import org.ga4gh.starterkit.passport.broker.app.PassportBrokerSpringConfig;
+import org.ga4gh.starterkit.passport.broker.model.PassportUser;
+import org.ga4gh.starterkit.passport.broker.utils.hibernate.PassportBrokerHibernateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -30,18 +30,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
-@ContextConfiguration(classes = {App.class, AppConfig.class, Visas.class})
+@ContextConfiguration(classes = {PassportBroker.class, PassportBrokerSpringConfig.class, Users.class})
 @WebAppConfiguration
-public class VisasTest extends AbstractTestNGSpringContextTests {
+public class UsersTest extends AbstractTestNGSpringContextTests {
 
-    private static final String API_PREFIX = "/admin/ga4gh/passport/v1/visas";
+    private static final String API_PREFIX = "/admin/ga4gh/passport/v1/users";
 
-    private static final String RESPONSE_DIR = "/responses/visas/";
+    private static final String RESPONSE_DIR = "/responses/users/";
 
-    private static final String PAYLOAD_DIR = "/payloads/visas/";
+    private static final String PAYLOAD_DIR = "/payloads/users/";
 
     @Autowired
-    private PassportHibernateUtil hibernateUtil;
+    private PassportBrokerHibernateUtil hibernateUtil;
 
     @Autowired
     private WebApplicationContext webAppContext;
@@ -53,8 +53,8 @@ public class VisasTest extends AbstractTestNGSpringContextTests {
         mockMvc = MockMvcBuilders.webAppContextSetup(webAppContext).build();
     }
 
-    @DataProvider(name = "indexVisasCases")
-    public Object[][] indexVisasCases() {
+    @DataProvider(name = "indexUsersCases")
+    public Object[][] indexUsersCases() {
         return new Object[][] {
             {
                 status().isOk(),
@@ -65,11 +65,11 @@ public class VisasTest extends AbstractTestNGSpringContextTests {
         };
     }
 
-    @DataProvider(name = "showVisaCases")
-    public Object[][] showVisaCases() {
+    @DataProvider(name = "showUserCases")
+    public Object[][] showUserCases() {
         return new Object[][] {
             {
-                "670cc2e7-9a9c-4273-9334-beb40d364e5c",
+                "85ff5a54-48b9-4294-a91d-2be50bd2a77d",
                 status().isOk(),
                 true,
                 "00.json",
@@ -80,13 +80,13 @@ public class VisasTest extends AbstractTestNGSpringContextTests {
                 status().isNotFound(),
                 false,
                 null,
-                "No PassportVisa exists at id 00000000-0000-0000-0000-000000000000"
+                "No PassportUser exists at id 00000000-0000-0000-0000-000000000000"
             }
         };
     }
 
-    @DataProvider(name = "createVisaCases")
-    public Object[][] createVisaCases() {
+    @DataProvider(name = "createUserCases")
+    public Object[][] createUserCases() {
         return new Object[][] {
             {
                 "00.json",
@@ -100,16 +100,16 @@ public class VisasTest extends AbstractTestNGSpringContextTests {
                 status().isConflict(),
                 false,
                 null,
-                "A(n) PassportVisa already exists at id 407e4891-2463-4f6f-b428-fe0f1850cf0c"
+                "A(n) PassportUser already exists at id aaec9d73-d7d6-490e-a49f-98ac02db1cca"
             }
         };
     }
 
-    @DataProvider(name = "updateVisaCases")
-    public Object[][] updateVisaCases() {
+    @DataProvider(name = "updateUserCases")
+    public Object[][] updateUserCases() {
         return new Object[][] {
             {
-                "407e4891-2463-4f6f-b428-fe0f1850cf0c",
+                "aaec9d73-d7d6-490e-a49f-98ac02db1cca",
                 "00.json",
                 status().isOk(),
                 true,
@@ -117,12 +117,12 @@ public class VisasTest extends AbstractTestNGSpringContextTests {
                 null
             },
             {
-                "670cc2e7-9a9c-4273-9334-beb40d364e5c",
+                "85ff5a54-48b9-4294-a91d-2be50bd2a77d",
                 "00.json",
                 status().isBadRequest(),
                 false,
                 null,
-                "Update requested at id 670cc2e7-9a9c-4273-9334-beb40d364e5c, but new PassportVisa has an id of 407e4891-2463-4f6f-b428-fe0f1850cf0c"
+                "Update requested at id 85ff5a54-48b9-4294-a91d-2be50bd2a77d, but new PassportUser has an id of aaec9d73-d7d6-490e-a49f-98ac02db1cca"
             },
             {
                 "00000000-0000-0000-0000-000000000000",
@@ -130,61 +130,61 @@ public class VisasTest extends AbstractTestNGSpringContextTests {
                 status().isConflict(),
                 false,
                 null,
-                "No PassportVisa at id 00000000-0000-0000-0000-000000000000"
+                "No PassportUser at id 00000000-0000-0000-0000-000000000000"
             }
         };
     }
 
-    @DataProvider(name = "deleteVisaCases")
-    public Object[][] deleteVisaCases() {
+    @DataProvider(name = "deleteUserCases")
+    public Object[][] deleteUserCases() {
         return new Object[][] {
             {
-                "407e4891-2463-4f6f-b428-fe0f1850cf0c",
+                "aaec9d73-d7d6-490e-a49f-98ac02db1cca",
                 status().isOk(),
                 true,
                 null
             },
             {
-                "407e4891-2463-4f6f-b428-fe0f1850cf0c",
+                "aaec9d73-d7d6-490e-a49f-98ac02db1cca",
                 status().isConflict(),
                 false,
-                "No PassportVisa at id 407e4891-2463-4f6f-b428-fe0f1850cf0c"
+                "No PassportUser at id aaec9d73-d7d6-490e-a49f-98ac02db1cca"
             }
         };
     }
 
     private void createTestEntities() throws Exception {
         String[] payloadFiles = {
-            "/payloads/visas/create/00.json"
+            "/payloads/users/create/00.json"
         };
         for (String payloadFile: payloadFiles) {
             String payloadBody = ResourceLoader.load(payloadFile);
             ObjectMapper objectMapper = new ObjectMapper();
-            PassportVisa passportVisa = objectMapper.readValue(payloadBody, PassportVisa.class);
-            hibernateUtil.createEntityObject(PassportVisa.class, passportVisa);
+            PassportUser passportUser = objectMapper.readValue(payloadBody, PassportUser.class);
+            hibernateUtil.createEntityObject(PassportUser.class, passportUser);
         }
     }
 
     private void deleteTestEntities() throws Exception {
-        hibernateUtil.deleteEntityObject(PassportVisa.class, "407e4891-2463-4f6f-b428-fe0f1850cf0c");
+        hibernateUtil.deleteEntityObject(PassportUser.class, "aaec9d73-d7d6-490e-a49f-98ac02db1cca");
     }
 
-    @AfterGroups("createVisa")
+    @AfterGroups("createUser")
     public void cleanupCreate() throws Exception {
         deleteTestEntities();
     }
 
-    @BeforeGroups("updateVisa")
+    @BeforeGroups("updateUser")
     public void setupUpdate() throws Exception {
         createTestEntities();
     }
 
-    @AfterGroups("updateVisa")
+    @AfterGroups("updateUser")
     public void cleanupUpdate() throws Exception {
         deleteTestEntities();
     }
 
-    @BeforeGroups("deleteVisa")
+    @BeforeGroups("deleteUser")
     public void setupDelete() throws Exception {
         createTestEntities();
     }
@@ -201,24 +201,24 @@ public class VisasTest extends AbstractTestNGSpringContextTests {
         }
     }
 
-    @Test(dataProvider = "indexVisasCases", groups = "indexVisa")
-    public void testGetPassportVisas(ResultMatcher expStatus, boolean expSuccess, String expFilename, String expMessage) throws Exception {
+    @Test(dataProvider = "indexUsersCases", groups = "indexUser")
+    public void testGetPassportUsers(ResultMatcher expStatus, boolean expSuccess, String expFilename, String expMessage) throws Exception {
         MvcResult result = mockMvc.perform(get(API_PREFIX))
             .andExpect(expStatus)
             .andReturn();
         genericAdminApiRequestTest(result, expSuccess, "index", expFilename, expMessage);
     }
 
-    @Test(dataProvider = "showVisaCases", groups = "showVisa")
-    public void testShowPassportVisa(String id, ResultMatcher expStatus, boolean expSuccess, String expFilename, String expMessage) throws Exception {
+    @Test(dataProvider = "showUserCases", groups = "showUser")
+    public void testShowPassportUser(String id, ResultMatcher expStatus, boolean expSuccess, String expFilename, String expMessage) throws Exception {
         MvcResult result = mockMvc.perform(get(API_PREFIX + "/" + id))
             .andExpect(expStatus)
             .andReturn();
         genericAdminApiRequestTest(result, expSuccess, "show", expFilename, expMessage);
     }
 
-    @Test(dataProvider = "createVisaCases", groups = "createVisa")
-    public void testCreatePassportVisa(String payloadFilename, ResultMatcher expStatus, boolean expSuccess, String expFilename, String expMessage) throws Exception {
+    @Test(dataProvider = "createUserCases", groups = "createUser")
+    public void testCreatePassportUser(String payloadFilename, ResultMatcher expStatus, boolean expSuccess, String expFilename, String expMessage) throws Exception {
         String expSubdir = "create";
         String payloadFile = PAYLOAD_DIR + expSubdir + "/" + payloadFilename;
         String payloadBody = ResourceLoader.load(payloadFile);
@@ -233,8 +233,8 @@ public class VisasTest extends AbstractTestNGSpringContextTests {
         genericAdminApiRequestTest(result, expSuccess, expSubdir, expFilename, expMessage);
     }
 
-    @Test(dataProvider = "updateVisaCases", groups = "updateVisa")
-    public void testUpdatePassportVisa(String id, String payloadFilename, ResultMatcher expStatus, boolean expSuccess, String expFilename, String expMessage) throws Exception {
+    @Test(dataProvider = "updateUserCases", groups = "updateUser")
+    public void testUpdatePassportUser(String id, String payloadFilename, ResultMatcher expStatus, boolean expSuccess, String expFilename, String expMessage) throws Exception {
         String expSubdir = "update";
         String payloadFile = PAYLOAD_DIR + expSubdir + "/" + payloadFilename;
         String payloadBody = ResourceLoader.load(payloadFile);
@@ -249,8 +249,8 @@ public class VisasTest extends AbstractTestNGSpringContextTests {
         genericAdminApiRequestTest(result, expSuccess, expSubdir, expFilename, expMessage);
     }
 
-    @Test(dataProvider = "deleteVisaCases", groups = "deleteVisa")
-    public void testDeletePassportVisa(String id, ResultMatcher expStatus, boolean expSuccess, String expMessage) throws Exception {
+    @Test(dataProvider = "deleteUserCases", groups = "deleteUser")
+    public void testDeletePassportUser(String id, ResultMatcher expStatus, boolean expSuccess, String expMessage) throws Exception {
         MvcResult result = mockMvc.perform(
             delete(API_PREFIX + "/" + id)
         )

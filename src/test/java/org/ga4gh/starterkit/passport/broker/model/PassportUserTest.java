@@ -1,4 +1,4 @@
-package org.ga4gh.starterkit.passport.model;
+package org.ga4gh.starterkit.passport.broker.model;
 
 import java.util.ArrayList;
 import java.util.List;

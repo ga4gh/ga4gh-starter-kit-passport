@@ -1,4 +1,4 @@
-package org.ga4gh.starterkit.passport.utils;
+package org.ga4gh.starterkit.passport.broker.utils;
 
 public class SerializeView {
 
