@@ -1,16 +1,27 @@
-FROM node:16.13.0 as builder
+FROM node:16.0-alpine
 
-WORKDIR /usr/src/build
-COPY package-lock.json package.json react.html tsconfig.json webpack.config.server.js webpack.config.ui.js ./
-COPY source source
-RUN npm install
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+ARG LINK=no
+
+RUN adduser -S ory -D -u 10000 -s /bin/nologin
+
+COPY package.json .
+COPY package-lock.json .
+
+RUN npm ci
+
+COPY . /usr/src/app
+
+RUN if [ "$LINK" == "true" ]; then (cd ./contrib/sdk/generated; rm -rf node_modules; npm ci; npm run build); \
+    cp -r ./contrib/sdk/generated/* node_modules/@ory/kratos-client/; \
+    fi
+
 RUN npm run build
 
-FROM node:16.13.0-alpine3.14
+USER 10000
 
-WORKDIR /usr/src/app
-COPY --from=builder /usr/src/build/dist dist
+ENTRYPOINT npm run serve
 
-WORKDIR /usr/src/app/dist
-
-ENTRYPOINT [ "node", "server.js" ]
+EXPOSE 3000

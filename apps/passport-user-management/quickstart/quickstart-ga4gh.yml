@@ -19,7 +19,7 @@ services:
       - ga4gh-passport-user-management
 
   ga4gh-passport-user-management-ui-node:
-    image: ga4gh/passport-user-management-ui:0.1.0
+    image: ga4gh/passport-user-management-ui:0.0.1
     ports:
       - "4455:4455"
     environment:
@@ -28,6 +28,7 @@ services:
       - PORT=4455
       - SECURITY_MODE=
       - KRATOS_BROWSER_URL=http://127.0.0.1:4433/
+      - PROJECT_NAME=FOOBAR123
     networks:
       - ga4gh-passport-user-management
     restart: on-failure
