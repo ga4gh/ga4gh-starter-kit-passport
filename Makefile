@@ -3,7 +3,6 @@ REPO := $(shell cat settings.gradle | grep "rootProject.name" | cut -f 3 -d ' ' 
 TAG := $(shell cat build.gradle | grep "^version" | cut -f 2 -d ' ' | sed "s/'//g")
 IMG := ${ORG}/${REPO}:${TAG}
 DEVDB := ga4gh-starter-kit.dev.db
-JAR := ga4gh-starter-kit-passport-admin.jar
 
 Nothing:
 	@echo "No target provided. Stop"
@@ -11,13 +10,6 @@ Nothing:
 .PHONY: clean-sqlite
 clean-sqlite:
 	@rm -f ${DEVDB}
-
-.PHONY: clean-jar
-clean-jar:
-	@rm -f ${JAR}
-
-.PHONY: clean-all
-clean-all: clean-sqlite clean-jar
 
 .PHONY: sqlite-db-build
 sqlite-db-build: clean-sqlite

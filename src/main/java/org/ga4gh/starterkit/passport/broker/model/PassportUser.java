@@ -1,4 +1,4 @@
-package org.ga4gh.starterkit.passport.model;
+package org.ga4gh.starterkit.passport.broker.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +13,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.ga4gh.starterkit.common.hibernate.HibernateEntity;
-import org.ga4gh.starterkit.passport.utils.SerializeView;
+import org.ga4gh.starterkit.passport.broker.utils.SerializeView;
 import org.hibernate.Hibernate;
 import org.springframework.lang.NonNull;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "passport_user")
+@Setter
+@Getter
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class PassportUser implements HibernateEntity<String> {
 
@@ -87,78 +91,8 @@ public class PassportUser implements HibernateEntity<String> {
         passportVisaAssertions = new ArrayList<>();
     }
 
-    /* Other API methods */
-
     @Override
     public void loadRelations() {
         Hibernate.initialize(getPassportVisaAssertions());
-    }
-
-    /* Setters and Getters */
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setPasswordSalt(String passwordSalt) {
-        this.passwordSalt = passwordSalt;
-    }
-
-    public String getPasswordSalt() {
-        return passwordSalt;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-    
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPassportVisaAssertions(List<PassportVisaAssertion> passportVisaAssertions) {
-        // this.passportVisaAssertions = passportVisaAssertions;
-        this.passportVisaAssertions.clear();
-        this.passportVisaAssertions.addAll(passportVisaAssertions);
-    }
-
-    public List<PassportVisaAssertion> getPassportVisaAssertions() {
-        return passportVisaAssertions;
     }
 }

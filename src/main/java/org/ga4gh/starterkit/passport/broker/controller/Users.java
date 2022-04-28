@@ -1,4 +1,4 @@
-package org.ga4gh.starterkit.passport.controller;
+package org.ga4gh.starterkit.passport.broker.controller;
 
 import java.util.List;
 import javax.annotation.Resource;
@@ -7,9 +7,9 @@ import org.ga4gh.starterkit.common.requesthandler.BasicCreateRequestHandler;
 import org.ga4gh.starterkit.common.requesthandler.BasicDeleteRequestHandler;
 import org.ga4gh.starterkit.common.requesthandler.BasicShowRequestHandler;
 import org.ga4gh.starterkit.common.requesthandler.BasicUpdateRequestHandler;
-import org.ga4gh.starterkit.passport.model.PassportUser;
-import org.ga4gh.starterkit.passport.utils.SerializeView;
-import org.ga4gh.starterkit.passport.utils.hibernate.PassportHibernateUtil;
+import org.ga4gh.starterkit.passport.broker.model.PassportUser;
+import org.ga4gh.starterkit.passport.broker.utils.SerializeView;
+import org.ga4gh.starterkit.passport.broker.utils.hibernate.PassportBrokerHibernateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class Users {
 
     @Autowired
-    private PassportHibernateUtil hibernateUtil;
+    private PassportBrokerHibernateUtil hibernateUtil;
 
     @Resource(name = "showUserRequestHandler")
     private BasicShowRequestHandler<String, PassportUser> showUser;

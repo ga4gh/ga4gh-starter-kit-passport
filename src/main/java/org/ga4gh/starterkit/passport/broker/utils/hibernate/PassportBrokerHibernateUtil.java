@@ -1,4 +1,4 @@
-package org.ga4gh.starterkit.passport.utils.hibernate;
+package org.ga4gh.starterkit.passport.broker.utils.hibernate;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,14 +7,14 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import org.ga4gh.starterkit.common.hibernate.HibernateEntity;
 import org.ga4gh.starterkit.common.hibernate.HibernateUtil;
-import org.ga4gh.starterkit.passport.model.PassportUser;
-import org.ga4gh.starterkit.passport.model.PassportVisa;
-import org.ga4gh.starterkit.passport.model.PassportVisaAssertion;
+import org.ga4gh.starterkit.passport.broker.model.PassportUser;
+import org.ga4gh.starterkit.passport.broker.model.PassportVisa;
+import org.ga4gh.starterkit.passport.broker.model.PassportVisaAssertion;
 import org.hibernate.Session;
 
-public class PassportHibernateUtil extends HibernateUtil {
+public class PassportBrokerHibernateUtil extends HibernateUtil {
 
-    public PassportHibernateUtil() {
+    public PassportBrokerHibernateUtil() {
         super();
         setAnnotatedClasses(new ArrayList<>(){{
             add(PassportUser.class);
