@@ -13,9 +13,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.ga4gh.starterkit.common.hibernate.HibernateEntity;
 import org.ga4gh.starterkit.passport.broker.utils.SerializeView;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "passport_visa_assertion")
+@Setter
+@Getter
 public class PassportVisaAssertion implements HibernateEntity<Long> {
 
     /* Non-relational entity attributes */
@@ -53,45 +57,9 @@ public class PassportVisaAssertion implements HibernateEntity<Long> {
         this.status = status;
     }
 
-    /* Other API methods */
-
     @Override
     public void loadRelations() {
 
-    }
-
-    /* Setters and Getters */
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setPassportUser(PassportUser passportUser) {
-        this.passportUser = passportUser;
-    }
-
-    public PassportUser getPassportUser() {
-        return passportUser;
-    }
-
-    public void setPassportVisa(PassportVisa passportVisa) {
-        this.passportVisa = passportVisa;
-    }
-
-    public PassportVisa getPassportVisa() {
-        return passportVisa;
     }
 
     @Override
