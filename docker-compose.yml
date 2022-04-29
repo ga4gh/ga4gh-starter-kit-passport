@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  passport-broker:
+    image: ga4gh/ga4gh-starter-kit-passport-broker:test
+    hostname: passport-broker.starterkit.ga4gh.org
+    ports:
+      - "4500:4500"
+      - "4501:4501"
