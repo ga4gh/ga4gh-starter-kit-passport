@@ -34,22 +34,6 @@ public class PassportUser implements HibernateEntity<String> {
     @JsonView(SerializeView.Always.class)
     private String id;
 
-    @Column(name = "email")
-    @NonNull
-    @JsonProperty(required = true)
-    @JsonView(SerializeView.Always.class)
-    private String email;
-
-    @Column(name = "first_name")
-    @NonNull
-    @JsonView(SerializeView.Always.class)
-    private String firstName;
-
-    @Column(name = "last_name")
-    @NonNull
-    @JsonView(SerializeView.Always.class)
-    private String lastName;
-
     /* Relational entity attributes */
 
     @OneToMany(mappedBy = "passportUser",

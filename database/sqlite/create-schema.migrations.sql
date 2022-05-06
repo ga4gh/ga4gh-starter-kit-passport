@@ -1,8 +1,5 @@
 CREATE TABLE passport_user (
-    id TEXT PRIMARY KEY,
-    email TEXT UNIQUE,
-    first_name TEXT,
-    last_name TEXT
+    id TEXT PRIMARY KEY
 );
 
 CREATE TABLE passport_visa (

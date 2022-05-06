@@ -26,14 +26,18 @@ public class PassportVisaTest {
 
     @Test(dataProvider = "cases")
     public void testPassportVisaNoArgsConstructor(
-        String id, String visaName, List<PassportVisaAssertion> passportVisaAssertions
+        String id, String visaName, String visaIssuer, String visaDescription, List<PassportVisaAssertion> passportVisaAssertions
     ) {
         PassportVisa visa = new PassportVisa();
         visa.setId(id);
         visa.setVisaName(visaName);
+        visa.setVisaIssuer(visaIssuer);
+        visa.setVisaDescription(visaDescription);
         visa.setPassportVisaAssertions(passportVisaAssertions);
 
         Assert.assertEquals(visa.getId(), id);
+        Assert.assertEquals(visa.getVisaIssuer(), visaIssuer);
+        Assert.assertEquals(visa.getVisaDescription(), visaDescription);
         Assert.assertEquals(visa.getVisaName(), visaName);
         Assert.assertEquals(visa.getPassportVisaAssertions(), passportVisaAssertions);
     }

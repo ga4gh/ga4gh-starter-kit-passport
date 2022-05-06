@@ -1,8 +1,5 @@
 INSERT INTO passport_user VALUES (
-    "85ff5a54-48b9-4294-a91d-2be50bd2a77d",
-    "ana.researcher@institute.org",
-    "Ana",
-    "Researcher"
+    "85ff5a54-48b9-4294-a91d-2be50bd2a77d"
 );
 
 INSERT INTO passport_visa VALUES (
