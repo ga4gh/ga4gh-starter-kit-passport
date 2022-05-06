@@ -35,6 +35,14 @@ public class PassportVisa implements HibernateEntity<String> {
     @JsonView(SerializeView.Always.class)
     private String visaName;
 
+    @Column(name = "visa_issuer")
+    @JsonView(SerializeView.Always.class)
+    private String visaIssuer;
+
+    @Column(name = "visa_description")
+    @JsonView(SerializeView.Always.class)
+    private String visaDescription;
+
     /* Relational entity attributes */
 
     @OneToMany(mappedBy = "passportVisa",
@@ -48,12 +56,6 @@ public class PassportVisa implements HibernateEntity<String> {
     /* Constructors */
 
     public PassportVisa() {
-        passportVisaAssertions = new ArrayList<>();
-    }
-
-    public PassportVisa(String id, String visaName) {
-        this.id = id;
-        this.visaName = visaName;
         passportVisaAssertions = new ArrayList<>();
     }
 
