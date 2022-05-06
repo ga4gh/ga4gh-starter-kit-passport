@@ -1,16 +1,12 @@
 CREATE TABLE passport_user (
-    id TEXT PRIMARY KEY,
-    username TEXT UNIQUE,
-    first_name TEXT,
-    last_name TEXT,
-    email TEXT UNIQUE,
-    password_salt TEXT UNIQUE,
-    password_hash TEXT
+    id TEXT PRIMARY KEY
 );
 
 CREATE TABLE passport_visa (
     id TEXT PRIMARY KEY,
-    visa_name TEXT UNIQUE
+    visa_name TEXT,
+    visa_issuer TEXT,
+    visa_description TEXT
 );
 
 CREATE TABLE passport_visa_assertion (

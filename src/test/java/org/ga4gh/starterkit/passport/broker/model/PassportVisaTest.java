@@ -14,7 +14,9 @@ public class PassportVisaTest {
         return new Object[][] {
             {
                 "670cc2e7-9a9c-4273-9334-beb40d364e5c",
-                "Controlled Datasets Dev",
+                "StarterKitDatasetsControlledAccessGrants",
+                "https://datasets.starterkit.ga4gh.org/",
+                "Controlled access dev datasets for the GA4GH Starter Kit",
                 new ArrayList<PassportVisaAssertion>() {{
                     add(new PassportVisaAssertion(0L, "active"));
                 }}
@@ -24,26 +26,18 @@ public class PassportVisaTest {
 
     @Test(dataProvider = "cases")
     public void testPassportVisaNoArgsConstructor(
-        String id, String visaName, List<PassportVisaAssertion> passportVisaAssertions
+        String id, String visaName, String visaIssuer, String visaDescription, List<PassportVisaAssertion> passportVisaAssertions
     ) {
         PassportVisa visa = new PassportVisa();
         visa.setId(id);
         visa.setVisaName(visaName);
+        visa.setVisaIssuer(visaIssuer);
+        visa.setVisaDescription(visaDescription);
         visa.setPassportVisaAssertions(passportVisaAssertions);
 
         Assert.assertEquals(visa.getId(), id);
-        Assert.assertEquals(visa.getVisaName(), visaName);
-        Assert.assertEquals(visa.getPassportVisaAssertions(), passportVisaAssertions);
-    }
-
-    @Test(dataProvider = "cases")
-    public void testPassportVisaAllArgsConstructor(
-        String id, String visaName, List<PassportVisaAssertion> passportVisaAssertions
-    ) {
-        PassportVisa visa = new PassportVisa(id, visaName);
-        visa.setPassportVisaAssertions(passportVisaAssertions);
-
-        Assert.assertEquals(visa.getId(), id);
+        Assert.assertEquals(visa.getVisaIssuer(), visaIssuer);
+        Assert.assertEquals(visa.getVisaDescription(), visaDescription);
         Assert.assertEquals(visa.getVisaName(), visaName);
         Assert.assertEquals(visa.getPassportVisaAssertions(), passportVisaAssertions);
     }

@@ -34,37 +34,6 @@ public class PassportUser implements HibernateEntity<String> {
     @JsonView(SerializeView.Always.class)
     private String id;
 
-    @Column(name = "username")
-    @NonNull
-    @JsonProperty(required = true)
-    @JsonView(SerializeView.Always.class)
-    private String username;
-
-    @Column(name = "first_name")
-    @NonNull
-    @JsonView(SerializeView.Always.class)
-    private String firstName;
-
-    @Column(name = "last_name")
-    @NonNull
-    @JsonView(SerializeView.Always.class)
-    private String lastName;
-
-    @Column(name = "email")
-    @NonNull
-    @JsonView(SerializeView.Always.class)
-    private String email;
-
-    @Column(name = "password_salt")
-    @NonNull
-    @JsonView(SerializeView.Always.class)
-    private String passwordSalt;
-
-    @Column(name = "password_hash")
-    @NonNull
-    @JsonView(SerializeView.Always.class)
-    private String passwordHash;
-
     /* Relational entity attributes */
 
     @OneToMany(mappedBy = "passportUser",
@@ -77,17 +46,6 @@ public class PassportUser implements HibernateEntity<String> {
     /* Constructors */
 
     public PassportUser() {
-        passportVisaAssertions = new ArrayList<>();
-    }
-
-    public PassportUser(String id, String username, String firstName, String lastName, String email, String passwordSalt, String passwordHash) {
-        this.id = id;
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.passwordSalt = passwordSalt;
-        this.passwordHash = passwordHash;
         passportVisaAssertions = new ArrayList<>();
     }
 
