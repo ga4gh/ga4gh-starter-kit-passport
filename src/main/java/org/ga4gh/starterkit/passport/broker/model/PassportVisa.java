@@ -43,6 +43,10 @@ public class PassportVisa implements HibernateEntity<String> {
     @JsonView(SerializeView.Always.class)
     private String visaDescription;
 
+    @Column(name = "visa_secret")
+    @JsonView(SerializeView.Never.class)
+    private String visaSecret;
+
     /* Relational entity attributes */
 
     @OneToMany(mappedBy = "passportVisa",

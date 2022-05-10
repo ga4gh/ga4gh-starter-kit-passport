@@ -34,6 +34,10 @@ public class PassportVisaAssertion implements HibernateEntity<Long> {
     @JsonView(SerializeView.Always.class)
     private String status;
 
+    @Column(name = "asserted_at")
+    @JsonView(SerializeView.Always.class)
+    private Long assertedAt;
+
     /* Relational entity attributes */
 
     @ManyToOne(fetch = FetchType.EAGER)

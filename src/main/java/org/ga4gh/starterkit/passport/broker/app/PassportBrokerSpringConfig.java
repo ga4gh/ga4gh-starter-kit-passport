@@ -15,6 +15,7 @@ import org.ga4gh.starterkit.common.util.webserver.AdminEndpointsFilter;
 import org.ga4gh.starterkit.common.util.webserver.CorsFilterBuilder;
 import org.ga4gh.starterkit.common.util.webserver.TomcatMultiConnectorServletWebServerFactoryCustomizer;
 import org.ga4gh.starterkit.passport.broker.utils.hibernate.PassportBrokerHibernateUtil;
+import org.ga4gh.starterkit.passport.broker.config.BrokerProps;
 import org.ga4gh.starterkit.passport.broker.model.PassportBrokerServiceInfo;
 import org.ga4gh.starterkit.passport.broker.model.PassportUser;
 import org.ga4gh.starterkit.passport.broker.model.PassportVisa;
@@ -131,6 +132,13 @@ public class PassportBrokerSpringConfig implements WebMvcConfigurer {
         @Qualifier(PassportBrokerConstants.FINAL_CONFIG_CONTAINER) PassportBrokerYamlConfigContainer configContainer
     ) {
         return configContainer.getPassportBrokerConfig().getServiceInfo();
+    }
+
+    @Bean
+    public BrokerProps getBrokerProps(
+        @Qualifier(PassportBrokerConstants.FINAL_CONFIG_CONTAINER) PassportBrokerYamlConfigContainer configContainer
+    ) {
+        return configContainer.getPassportBrokerConfig().getBrokerProps();
     }
 
     /* ******************************
