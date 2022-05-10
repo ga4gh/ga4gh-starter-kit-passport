@@ -3,6 +3,8 @@ package org.ga4gh.starterkit.passport.broker.controller;
 import java.util.List;
 import javax.annotation.Resource;
 import com.fasterxml.jackson.annotation.JsonView;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.ga4gh.starterkit.common.requesthandler.BasicCreateRequestHandler;
 import org.ga4gh.starterkit.common.requesthandler.BasicDeleteRequestHandler;
 import org.ga4gh.starterkit.common.requesthandler.BasicShowRequestHandler;
@@ -59,6 +61,10 @@ public class Visas {
         @RequestBody PassportVisa passportVisa
     ) {
         setBidirectionalRelationship(passportVisa);
+        // set visa secret if it doesn't exist
+        if (passportVisa.getVisaSecret() == null) {
+            passportVisa.setVisaSecret(RandomStringUtils.random(64, true, true));
+        }
         return createVisa.prepare(passportVisa).handleRequest();
     }
 
@@ -69,6 +75,10 @@ public class Visas {
         @RequestBody PassportVisa passportVisa
     ) {
         setBidirectionalRelationship(passportVisa);
+        // set visa secret if it doesn't exist
+        if (passportVisa.getVisaSecret() == null) {
+            passportVisa.setVisaSecret(RandomStringUtils.random(64, true, true));
+        }
         return updateVisa.prepare(visaId, passportVisa).handleRequest();
     }
 

@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.ga4gh.starterkit.common.hibernate.HibernateEntity;
 import org.ga4gh.starterkit.passport.broker.utils.SerializeView;
@@ -20,6 +21,7 @@ import lombok.Setter;
 @Table(name = "passport_visa_assertion")
 @Setter
 @Getter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PassportVisaAssertion implements HibernateEntity<Long> {
 
     /* Non-relational entity attributes */
