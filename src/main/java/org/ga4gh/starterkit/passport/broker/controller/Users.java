@@ -1,5 +1,7 @@
 package org.ga4gh.starterkit.passport.broker.controller;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import javax.annotation.Resource;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -8,6 +10,7 @@ import org.ga4gh.starterkit.common.requesthandler.BasicDeleteRequestHandler;
 import org.ga4gh.starterkit.common.requesthandler.BasicShowRequestHandler;
 import org.ga4gh.starterkit.common.requesthandler.BasicUpdateRequestHandler;
 import org.ga4gh.starterkit.passport.broker.model.PassportUser;
+import org.ga4gh.starterkit.passport.broker.model.PassportVisaAssertion;
 import org.ga4gh.starterkit.passport.broker.utils.SerializeView;
 import org.ga4gh.starterkit.passport.broker.utils.hibernate.PassportBrokerHibernateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +62,13 @@ public class Users {
         @RequestBody PassportUser passportUser
     ) {
         setBidirectionalRelationship(passportUser);
+        // set assertion time to now if no assertion time exists
+        Long epoch = Long.valueOf(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
+        for (PassportVisaAssertion assertion : passportUser.getPassportVisaAssertions()) {
+            if (assertion.getAssertedAt() == null) {
+                assertion.setAssertedAt(epoch);
+            }
+        }
         return createUser.prepare(passportUser).handleRequest();
     }
 
@@ -69,6 +79,13 @@ public class Users {
         @RequestBody PassportUser passportUser
     ) {
         setBidirectionalRelationship(passportUser);
+        // set assertion time to now if no assertion time exists
+        Long epoch = Long.valueOf(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
+        for (PassportVisaAssertion assertion : passportUser.getPassportVisaAssertions()) {
+            if (assertion.getAssertedAt() == null) {
+                assertion.setAssertedAt(epoch);
+            }
+        }
         return updateUser.prepare(userId, passportUser).handleRequest();
     }
 
