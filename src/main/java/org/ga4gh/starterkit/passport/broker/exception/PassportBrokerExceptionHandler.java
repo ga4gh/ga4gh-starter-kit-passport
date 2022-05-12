@@ -19,7 +19,6 @@ public class PassportBrokerExceptionHandler extends ResponseEntityExceptionHandl
 
     @ExceptionHandler(value = {CustomException.class})
     protected ResponseEntity<Object> handleCustomException(CustomException ex, WebRequest request) {
-        System.out.println("HEY HEY A CUSTOM EXCEPTION COMING AT U");
         HttpStatus status = ex.getClass().getAnnotation(ResponseStatus.class).value();
         return handleException(ex, null, status, request);
     }
