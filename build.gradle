@@ -22,7 +22,7 @@ plugins {
 
 archivesBaseName = 'ga4gh-starter-kit-passport-broker'
 group 'org.ga4gh'
-version '0.0.2-rc3'
+version '0.0.2'
 
 repositories {
     jcenter()
