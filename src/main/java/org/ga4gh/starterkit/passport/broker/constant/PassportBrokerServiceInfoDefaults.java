@@ -16,7 +16,7 @@ public class PassportBrokerServiceInfoDefaults {
     public static final LocalDateTime CREATED_AT = LocalDateTime.parse("2022-04-28T09:00:00Z", DateTimeConstants.DATE_FORMATTER);
     public static final LocalDateTime UPDATED_AT = LocalDateTime.parse("2022-04-28T09:00:00Z", DateTimeConstants.DATE_FORMATTER);
     public static final String ENVIRONMENT = "test";
-    public static final String VERSION = "0.0.2-rc1";
+    public static final String VERSION = "0.0.2-rc2";
     public static final String ORGANIZATION_NAME = "Global Alliance for Genomics and Health";
     public static final String ORGANIZATION_URL = "https://ga4gh.org";
     public static final String SERVICE_TYPE_GROUP = "org.ga4gh";

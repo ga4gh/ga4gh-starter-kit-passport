@@ -1,6 +1,7 @@
 package org.ga4gh.starterkit.passport.broker.controller;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -62,17 +63,20 @@ public class Mint {
         // Construct JWT Phase
         String passportIss = brokerProps.getPassportIssuer();
         String sub = mintRequestBody.getResearcherEmail();
-        long iat = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
+        long iat = LocalDateTime.now(ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC);
         long exp = iat + 3600;
         String scope = "openid";
 
         // Construct JWT for each requested visa
-        String[] visaJwts = new String[mintRequestBody.getRequestedVisas().size()];
+        int nVisas = mintRequestBody.getRequestedVisas().size();
+        String[] visaJwts = new String[nVisas];
+        String[] containedVisas = new String[nVisas];
         int i = 0;
         for (String requestedVisaId : mintRequestBody.getRequestedVisas()) {
             PassportVisa visaObj = researcherVisaMap.get(requestedVisaId);
             PassportVisaAssertion assertionObj = researcherVisaAssertionMap.get(requestedVisaId);
 
+            String visaName = visaObj.getVisaName();
             String visaIss = visaObj.getVisaIssuer();
             long visaAsserted = assertionObj.getAssertedAt();
             String visaJwt = JWT.create()
@@ -86,10 +90,13 @@ public class Mint {
                     put("value", "https://doi.org/10.1038/s41431-018-0219-y"); // hardcoded DOI to passport spec for now
                     put("source", visaIss); // same as visa issuer
                     put("by", "dac"); // hardcoded to DAC for now
+                    put("visa_name", visaName);
+                    put("visa_issuer", visaIss);
                 }})
                 .sign(Algorithm.HMAC256(visaObj.getVisaSecret()));
             
             visaJwts[i] = visaJwt;
+            containedVisas[i] = visaName + "@" + visaIss;
             i++;
         }
 
@@ -103,6 +110,7 @@ public class Mint {
             .withClaim("exp", exp)
             .withClaim("scope", scope)
             .withArrayClaim("ga4gh_passport_v1", visaJwts)
+            .withArrayClaim("contained_visas", containedVisas)
             // JWT signature
             .sign(Algorithm.HMAC256(brokerProps.getBrokerSecret()));
     }
