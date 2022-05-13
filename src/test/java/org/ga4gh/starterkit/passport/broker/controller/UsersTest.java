@@ -3,6 +3,7 @@ package org.ga4gh.starterkit.passport.broker.controller;
 import org.ga4gh.starterkit.passport.broker.app.PassportBroker;
 import org.ga4gh.starterkit.passport.broker.app.PassportBrokerSpringConfig;
 import org.ga4gh.starterkit.passport.broker.model.PassportUser;
+import org.ga4gh.starterkit.passport.broker.model.PassportVisaAssertion;
 import org.ga4gh.starterkit.passport.broker.utils.hibernate.PassportBrokerHibernateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -189,9 +190,8 @@ public class UsersTest extends AbstractTestNGSpringContextTests {
         createTestEntities();
     }
 
-    private void genericAdminApiRequestTest(MvcResult result, boolean expSuccess, String expSubdir, String expFilename, String expMessage) throws Exception {
+    private void genericAdminApiRequestTest(MvcResult result, String responseBody, boolean expSuccess, String expSubdir, String expFilename, String expMessage) throws Exception {
         if (expSuccess) {
-            String responseBody = result.getResponse().getContentAsString();
             String expFile = RESPONSE_DIR + expSubdir + "/" + expFilename;
             String expResponseBody = ResourceLoader.load(expFile);
             Assert.assertEquals(responseBody, expResponseBody);
@@ -206,7 +206,8 @@ public class UsersTest extends AbstractTestNGSpringContextTests {
         MvcResult result = mockMvc.perform(get(API_PREFIX))
             .andExpect(expStatus)
             .andReturn();
-        genericAdminApiRequestTest(result, expSuccess, "index", expFilename, expMessage);
+        String responseBody = result.getResponse().getContentAsString();
+        genericAdminApiRequestTest(result, responseBody, expSuccess, "index", expFilename, expMessage);
     }
 
     @Test(dataProvider = "showUserCases", groups = "showUser")
@@ -214,7 +215,8 @@ public class UsersTest extends AbstractTestNGSpringContextTests {
         MvcResult result = mockMvc.perform(get(API_PREFIX + "/" + id))
             .andExpect(expStatus)
             .andReturn();
-        genericAdminApiRequestTest(result, expSuccess, "show", expFilename, expMessage);
+        String responseBody = result.getResponse().getContentAsString();
+        genericAdminApiRequestTest(result, responseBody, expSuccess, "show", expFilename, expMessage);
     }
 
     @Test(dataProvider = "createUserCases", groups = "createUser")
@@ -230,7 +232,8 @@ public class UsersTest extends AbstractTestNGSpringContextTests {
         )
             .andExpect(expStatus)
             .andReturn();
-        genericAdminApiRequestTest(result, expSuccess, expSubdir, expFilename, expMessage);
+        String responseBody = result.getResponse().getContentAsString();
+        genericAdminApiRequestTest(result, responseBody, expSuccess, expSubdir, expFilename, expMessage);
     }
 
     @Test(dataProvider = "updateUserCases", groups = "updateUser")
@@ -246,7 +249,22 @@ public class UsersTest extends AbstractTestNGSpringContextTests {
         )
             .andExpect(expStatus)
             .andReturn();
-        genericAdminApiRequestTest(result, expSuccess, expSubdir, expFilename, expMessage);
+        
+        // assertion timestamp changes with time. We make sure that "assertedAt"
+        // is not null, then modify it to a constant so the overall JSON can be
+        // compared against expected
+        String responseBody = result.getResponse().getContentAsString();
+        if (expSuccess) {
+            ObjectMapper mapper = new ObjectMapper();
+            PassportUser user = mapper.readValue(responseBody, PassportUser.class);
+            for (PassportVisaAssertion assertion : user.getPassportVisaAssertions()) {
+                Assert.assertNotNull(assertion.getAssertedAt());
+                assertion.setAssertedAt(Long.valueOf(1652187600));
+            }
+            responseBody = mapper.writeValueAsString(user);
+        }
+        
+        genericAdminApiRequestTest(result, responseBody, expSuccess, expSubdir, expFilename, expMessage);
     }
 
     @Test(dataProvider = "deleteUserCases", groups = "deleteUser")

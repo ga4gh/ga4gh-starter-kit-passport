@@ -22,7 +22,7 @@ plugins {
 
 archivesBaseName = 'ga4gh-starter-kit-passport-broker'
 group 'org.ga4gh'
-version '0.0.1'
+version '0.0.2'
 
 repositories {
     jcenter()
@@ -50,6 +50,7 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-ui:1.2.33'
     implementation 'org.xerial:sqlite-jdbc:3.8.11.2'
     implementation 'org.ga4gh:ga4gh-starter-kit-common:0.5.6'
+    implementation 'com.auth0:java-jwt:3.19.1'
 
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'

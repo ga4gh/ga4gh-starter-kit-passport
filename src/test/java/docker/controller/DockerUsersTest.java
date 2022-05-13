@@ -1,11 +1,19 @@
 package docker.controller;
 
+import java.net.http.HttpResponse;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.ga4gh.starterkit.passport.broker.model.PassportUser;
+import org.ga4gh.starterkit.passport.broker.model.PassportVisaAssertion;
+import org.testng.Assert;
 import org.testng.annotations.AfterGroups;
 import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import testutils.HttpMethod;
+import testutils.ResourceLoader;
 import testutils.SimpleHttpRequestTester;
 
 public class DockerUsersTest {
@@ -162,13 +170,27 @@ public class DockerUsersTest {
 
     @Test(dataProvider = "updateUser", groups = "updateUser")
     public void testUpdatePassportUser(String id, String payloadFilename, int expStatus, boolean expSuccess, String expFilename) throws Exception {
-        SimpleHttpRequestTester.putRequestAndTest(
+        HttpResponse<String> response = SimpleHttpRequestTester.makeHttpRequest(
+            HttpMethod.PUT,
             BASE_URL + "/" + id,
-            PAYLOAD_DIR + "/update/" + payloadFilename,
-            expStatus,
-            expSuccess,
-            RESPONSE_DIR + "/update/" + expFilename
+            PAYLOAD_DIR + "/update/" + payloadFilename
         );
+
+        Assert.assertEquals(response.statusCode(), expStatus);
+        if (expSuccess) {
+            String responseBody = response.body();
+            // modify response body to use hardcoded timestamps
+            ObjectMapper mapper = new ObjectMapper();
+            PassportUser user = mapper.readValue(responseBody, PassportUser.class);
+            for (PassportVisaAssertion assertion : user.getPassportVisaAssertions()) {
+                Assert.assertNotNull(assertion.getAssertedAt());
+                assertion.setAssertedAt(Long.valueOf(1652187600));
+            }
+            responseBody = mapper.writeValueAsString(user);
+            
+            String expResponseBody = ResourceLoader.load(RESPONSE_DIR + "/update/" + expFilename);
+            Assert.assertEquals(responseBody, expResponseBody);
+        }
     }
 
     @Test(dataProvider = "deleteUser", groups = "deleteUser")
