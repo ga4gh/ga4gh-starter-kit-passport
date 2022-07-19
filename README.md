@@ -14,9 +14,9 @@ Please see [starterkit.ga4gh.org](https://starterkit.ga4gh.org) for the full doc
 
 Basic instructions for running Starter Kit Passport Broker in a dev environment are included here.
 
-### Docker
-
 ## Run Passport Broker Locally
+
+### Docker
 
 Pull the image:
 ```
@@ -25,7 +25,7 @@ docker pull ga4gh/ga4gh-starter-kit-passport-broker:latest
 
 Run container with default settings:
 ```
-docker run -p 4500:4500 ga4gh/ga4gh-starter-kit-drs:latest
+docker run -p 4500:4500 ga4gh/ga4gh-starter-kit-passport-broker:latest
 ```
 
 ### Native
@@ -62,7 +62,7 @@ java -jar build/libs/ga4gh-starter-kit-passport-broker-${VERSION}.jar
 
 ### Confirm server is running
 
-Whether running via docker or natively on a local machine, confirm the DRS API is up running by visiting its `service-info` endpoint, you should receive a valid `ServiceInfo` response.
+Whether running via docker or natively on a local machine, confirm the Passport Broker API is up running by visiting its `service-info` endpoint, you should receive a valid `ServiceInfo` response.
 
 ```
 GET http://localhost:4500/ga4gh/passport/v1/service-info
