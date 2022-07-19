@@ -14,12 +14,109 @@ Please see [starterkit.ga4gh.org](https://starterkit.ga4gh.org) for the full doc
 
 Basic instructions for running Starter Kit Passport Broker in a dev environment are included here.
 
+### Docker
+
 ## Run Passport Broker Locally
 
-### Run natively (on local OS)
+Pull the image:
+```
+docker pull ga4gh/ga4gh-starter-kit-passport-broker:latest
+```
 
-Coming soon...
+Run container with default settings:
+```
+docker run -p 4500:4500 ga4gh/ga4gh-starter-kit-drs:latest
+```
 
-### Run via Docker
+### Native
 
-Coming soon...
+The service can also be installed locally in cases where docker deployments are not possible, or for development of the codebase. Native installations require:
+* Java 11+
+* Gradle 7.3.2+
+* SQLite (for creating the dev database)
+
+First, clone the repository from Github:
+```
+git clone https://github.com/ga4gh/ga4gh-starter-kit-passport-broker.git
+cd ga4gh-starter-kit-passport-broker
+```
+
+The service can be run in development mode directly via gradle:
+
+Run with all defaults
+```
+./gradlew bootRun
+```
+
+Alternatively, the service can be built as a jar and run:
+
+Build jar:
+```
+./gradlew bootJar
+```
+
+Run the application
+```
+java -jar build/libs/ga4gh-starter-kit-passport-broker-${VERSION}.jar
+```
+
+### Confirm server is running
+
+Whether running via docker or natively on a local machine, confirm the DRS API is up running by visiting its `service-info` endpoint, you should receive a valid `ServiceInfo` response.
+
+```
+GET http://localhost:4500/ga4gh/passport/v1/service-info
+
+Response:
+{
+    "id": "org.ga4gh.starterkit.passport.broker",
+    "name": "GA4GH Starter Kit Passport Broker Service",
+    "description": "Starter Kit implementation of a Passport Broker service, outlined in the GA4GH Passports specification. Manages researcher permissions to data and compute, and enables this information to be minted as JWTs and passed to downstream clearinghouses.",
+    "contactUrl": "mailto:info@ga4gh.org",
+    "documentationUrl": "https://github.com/ga4gh/ga4gh-starter-kit-passport-broker",
+    "createdAt": "2022-04-28T09:00:00Z",
+    "updatedAt": "2022-04-28T09:00:00Z",
+    "environment": "test",
+    "version": "0.0.2",
+    "type": {
+        "group": "org.ga4gh",
+        "artifact": "passport-broker",
+        "version": "1.0.0"
+    },
+    "organization": {
+        "name": "Global Alliance for Genomics and Health",
+        "url": "https://ga4gh.org"
+    }
+}
+```
+
+## Development
+
+Additional setup steps to run the Passport Broker service in a local environment for development and testing.
+
+### Setup dev database
+
+A local SQLite database must be set up for running the Passport Broker service in a development context. If `make` and `sqlite3` are already installed on the system `PATH`, this database can be created and populated with a dev dataset by simply running: 
+
+```
+make sqlite-db-refresh
+```
+
+This will create a SQLite database named `ga4gh-starter-kit.dev.db` in the current directory.
+
+If `make` and/or `sqlite` are not installed, [this file](./database/sqlite/create-tables.sql) contains SQLite commands for creating the database schema, and [this file](./database/sqlite/add-dev-dataset.sql) contains SQLite commands for populating it with the dev dataset.
+
+Confirm the Passport Broker service can connect to the dev database by submitting a...
+
+```
+GET ??
+
+Response:
+{
+    ??
+}
+```
+
+**NOTE:** If running via docker, the dev database is already bundled within the container.
+
+**NOTE:** The unit and end-to-end test suite is predicated on a preconfigured database. The SQLite dev database must be present for tests to pass.
