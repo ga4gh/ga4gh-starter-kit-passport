@@ -104,6 +104,10 @@ make sqlite-db-refresh
 
 This will create a SQLite database named `ga4gh-starter-kit.dev.db` in the current directory.
 
+###### What is included in the Dev Dataset?
+
+Four example users, four example visas and eight example assertions. An assertion is created every time a visa is assigned to a user.
+
 If `make` and/or `sqlite` are not installed, [this file](./database/sqlite/create-tables.sql) contains SQLite commands for creating the database schema, and [this file](./database/sqlite/add-dev-dataset.sql) contains SQLite commands for populating it with the dev dataset.
 
 Confirm the Passport Broker service can connect to the dev database by submitting a request to learn more about a specific visa.
@@ -133,3 +137,32 @@ Response:
 **NOTE:** If running via docker, the dev database is already bundled within the container.
 
 **NOTE:** The unit and end-to-end test suite is predicated on a preconfigured database. The SQLite dev database must be present for tests to pass.
+
+## Config Files
+
+There is an [example config file](https://github.com/ga4gh/ga4gh-starter-kit-passport-broker/blob/main/src/test/resources/config/test-config-00.yml) present in this repo:
+
+```
+passportBrokerConfig:
+  serverProps:
+    scheme: http
+    publicApiPort: 7000
+    adminApiPort: 7001
+  serviceInfo:
+    id: org.ga4gh.starterkit.passport.broker.custom.test
+    name: Passport Broker Custom Config Test Deployment
+    description: Passport Broker test deployment using custom configurations
+    contactUrl: mailto:test@ga4gh.org
+    organization:
+      name: GA4GH
+      url: https://ga4gh.org
+```
+
+This configuration file modifies some fields, but there is many more fields that can be configured. Below is a complete list:
+
+| Top-Level Key             | Variable Name |
+| ------------------------- |:-------------:| 
+| ServerProps               | right-aligned | 
+| DatabaseProps             | centered      |  
+| PassportBrokerServiceInfo | are neat      | 
+| BrokerProps               | are neat      | 
