@@ -163,6 +163,6 @@ This configuration file modifies some fields, but there is many more fields that
 | Top-Level Key             | Variable Name |
 | ------------------------- |:-------------:| 
 | ServerProps               | scheme, hostname, publicApiPort, adminApiPort, logLevel, logFile, disableSpringLogging, publicApiCorsAllowedOrigins, publicApiCorsAllowedMethods, publicApiCorsAllowedHeaders, adminApiCorsAllowedOrigins, adminApiCorsAllowedMethods, adminApiCorsAllowedHeaders | 
-| DatabaseProps             | centered      |  
-| PassportBrokerServiceInfo | are neat      | 
-| BrokerProps               | are neat      | 
+| DatabaseProps             | url, username, password, poolSize, showSQL |  
+| PassportBrokerServiceInfo | name, description, contactUrl, documentationUrl, environment, version, type, organization | 
+| BrokerProps               | passportIssuer, brokerSecret | 
