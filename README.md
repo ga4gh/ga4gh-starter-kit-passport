@@ -106,14 +106,27 @@ This will create a SQLite database named `ga4gh-starter-kit.dev.db` in the curre
 
 If `make` and/or `sqlite` are not installed, [this file](./database/sqlite/create-tables.sql) contains SQLite commands for creating the database schema, and [this file](./database/sqlite/add-dev-dataset.sql) contains SQLite commands for populating it with the dev dataset.
 
-Confirm the Passport Broker service can connect to the dev database by submitting a...
+Confirm the Passport Broker service can connect to the dev database by submitting a request to learn more about a specific visa in the database.
 
 ```
-GET ??
+GET http://localhost:4501/admin/ga4gh/passport/v1/visas/670cc2e7-9a9c-4273-9334-beb40d364e5c
 
 Response:
 {
-    ??
+    "id": "670cc2e7-9a9c-4273-9334-beb40d364e5c",
+    "visaName": "StarterKitDatasetsControlledAccessGrants",
+    "visaIssuer": "https://datasets.starterkit.ga4gh.org/",
+    "visaDescription": "Controlled access dev datasets for the GA4GH Starter Kit",
+    "visaSecret": "87A3B5D68FD88197254D9889B4AAB",
+    "passportVisaAssertions": [
+        {
+            "status": "active",
+            "assertedAt": 1652187600,
+            "passportUser": {
+                "id": "85ff5a54-48b9-4294-a91d-2be50bd2a77d"
+            }
+        }
+    ]
 }
 ```
 
