@@ -162,7 +162,7 @@ This configuration file modifies some fields, but there is many more fields that
 
 | Top-Level Key             | Variable Name |
 | ------------------------- |:-------------:| 
-| ServerProps               | right-aligned | 
+| ServerProps               | scheme, hostname, publicApiPort, adminApiPort, logLevel, logFile, disableSpringLogging, publicApiCorsAllowedOrigins, publicApiCorsAllowedMethods, publicApiCorsAllowedHeaders, adminApiCorsAllowedOrigins, adminApiCorsAllowedMethods, adminApiCorsAllowedHeaders | 
 | DatabaseProps             | centered      |  
 | PassportBrokerServiceInfo | are neat      | 
 | BrokerProps               | are neat      | 
