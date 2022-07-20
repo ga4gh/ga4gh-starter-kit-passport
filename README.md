@@ -138,7 +138,7 @@ Response:
 
 **NOTE:** The unit and end-to-end test suite is predicated on a preconfigured database. The SQLite dev database must be present for tests to pass.
 
-## Config Files
+## Configuring the Service with Config Files
 
 There is an [example config file](https://github.com/ga4gh/ga4gh-starter-kit-passport-broker/blob/main/src/test/resources/config/test-config-00.yml) present in this repo:
 
@@ -158,7 +158,7 @@ passportBrokerConfig:
       url: https://ga4gh.org
 ```
 
-This configuration file modifies some fields, but there is many more fields that can be configured. Below is a complete list:
+This configuration file modifies some fields, but there are many more fields that can be configured. Below is a complete list:
 
 | Top-Level Key             | Variable Name |
 | ------------------------- |:-------------:| 
@@ -166,3 +166,18 @@ This configuration file modifies some fields, but there is many more fields that
 | DatabaseProps             | url, username, password, poolSize, showSQL |  
 | PassportBrokerServiceInfo | name, description, contactUrl, documentationUrl, environment, version, type, organization | 
 | BrokerProps               | passportIssuer, brokerSecret | 
+
+## Run Passport Broker with a Config File
+
+### Docker
+
+Run the Docker container: 
+```
+docker run -p 4500:4500 ga4gh/ga4gh-starter-kit-passport-broker:latest java -jar ga4gh-starter-kit-passport-broker.jar -c path/to/config.yml
+```
+
+### Native
+
+```
+./gradlew bootRun --args="--config path/to/config.yml"
+```
