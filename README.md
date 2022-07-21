@@ -140,46 +140,4 @@ Response:
 
 ## Configuring the Service with Config Files
 
-Check the [configuration document](google.com) to learn more.
-
-There is an example config file present in this repo:
-
-```
-passportBrokerConfig:
-  serverProps:
-    scheme: http
-    publicApiPort: 7000
-    adminApiPort: 7001
-  serviceInfo:
-    id: org.ga4gh.starterkit.passport.broker.custom.test
-    name: Passport Broker Custom Config Test Deployment
-    description: Passport Broker test deployment using custom configurations
-    contactUrl: mailto:test@ga4gh.org
-    organization:
-      name: GA4GH
-      url: https://ga4gh.org
-```
-
-This configuration file modifies some fields, but there are many more fields that can be configured. Below is a complete list:
-
-| Top-Level Key             | Variable Name |
-| ------------------------- |:-------------:| 
-| ServerProps               | scheme, hostname, publicApiPort, adminApiPort, logLevel, logFile, disableSpringLogging, publicApiCorsAllowedOrigins, publicApiCorsAllowedMethods, publicApiCorsAllowedHeaders, adminApiCorsAllowedOrigins, adminApiCorsAllowedMethods, adminApiCorsAllowedHeaders | 
-| DatabaseProps             | url, username, password, poolSize, showSQL |  
-| PassportBrokerServiceInfo | name, description, contactUrl, documentationUrl, environment, version, type, organization | 
-| BrokerProps               | passportIssuer, brokerSecret | 
-
-## Run Passport Broker with a Config File
-
-### Docker
-
-Run the Docker container: 
-```
-docker run -p 4500:4500 ga4gh/ga4gh-starter-kit-passport-broker:latest java -jar ga4gh-starter-kit-passport-broker.jar -c path/to/config.yml
-```
-
-### Native
-
-```
-./gradlew bootRun --args="--config path/to/config.yml"
-```
+Check the [configuration document](./CONFIGURATION.md) to learn more.
