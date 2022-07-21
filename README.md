@@ -140,7 +140,9 @@ Response:
 
 ## Configuring the Service with Config Files
 
-There is an [example config file](https://github.com/ga4gh/ga4gh-starter-kit-passport-broker/blob/main/src/test/resources/config/test-config-00.yml) present in this repo:
+Check the [configuration document](google.com) to learn more.
+
+There is an example config file present in this repo:
 
 ```
 passportBrokerConfig:
