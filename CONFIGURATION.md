@@ -22,7 +22,7 @@ This configuration file modifies some fields, but there are many more fields tha
 
 ## YAML config file
 
-The YAML config file must contain a single root property of `drs`, under which all subconfigurations are located:
+The YAML config file must contain a single root property of `passportBrokerConfig`, under which all subconfigurations are located:
 
 ```
 passportBrokerConfig:
