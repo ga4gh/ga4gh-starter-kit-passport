@@ -1,6 +1,6 @@
 ## Configuration
 
-The Passport Broker service can be configured with custom properties, affecting behavior at runtime. There is an example config file present in this repo:
+The Passport Broker service can be configured with custom properties, affecting behavior at runtime. Here is an example config file:
 
 ```
 passportBrokerConfig:
