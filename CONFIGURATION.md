@@ -133,7 +133,7 @@ brokerProps:
 | Attribute | Description | Default |
 |-----------|-------------|---------|
 | passportIssuer | URL to passport issuer organization's domain | https://ga4gh.org |
-| brokerSecret | ? | insecureSecretPleaseOverride |
+| brokerSecret | The secret string used by the passport broker to mint a Passport JWT | insecureSecretPleaseOverride |
 
 ## Run Passport Broker with a Config File
 
