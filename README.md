@@ -141,3 +141,7 @@ Response:
 ## Configuring the Service with Config Files
 
 Check the [configuration document](./CONFIGURATION.md) to learn more.
+
+## Maintainers
+
+* GA4GH Tech Team [ga4gh-tech-team@ga4gh.org](mailto:ga4gh-tech-team@ga4gh.org)
